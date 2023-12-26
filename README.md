@@ -1,0 +1,1 @@
+# GrapesJS click plugin
