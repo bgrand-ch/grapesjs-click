@@ -11,11 +11,8 @@
         Insert your text here
       </div>
     </div>
-
-    <div id="grabbed-info" style="display: none;"></div>
-
+    <div id="element" style="display: none;"></div>
     <script type="module" src="/src/example.ts"></script>
-
     <style>
       html, body {
         margin: 0;
@@ -25,9 +22,14 @@
         font: inherit;
         vertical-align: baseline;
       }
-
       body {
         line-height: 1;
+      }
+      #element {
+        padding: 8px;
+        border-radius: 4px;
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       }
     </style>
   </body>

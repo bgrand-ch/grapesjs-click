@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "grapesjs-click",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "GrapesJS click plugin",
   "author": "Benjamin Grand",
   "license": "BSD-3-Clause",
@@ -20,8 +20,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "prepublishOnly": "pnpm run build",
-    "postinstall": "pnpm run build"
+    "prepare": "pnpm run build"
   },
   "devDependencies": {
     "grapesjs": "0.21.8",

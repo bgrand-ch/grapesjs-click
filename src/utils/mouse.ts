@@ -3,7 +3,7 @@ import { logScope, grabBlockCommand, dropBlockCommand, grabComponentCommand, dro
 import type { Editor } from 'grapesjs'
 import type { MouseListener } from '../types'
 
-const defaultDistance = 10
+const defaultDistance = 24
 
 export function getMouseListener (element: HTMLElement, distance = defaultDistance) {
   return (event: MouseEvent) => {
@@ -28,7 +28,7 @@ export function getMouseListener (element: HTMLElement, distance = defaultDistan
 export function showGrabbedInfo (element: HTMLElement, mouseListener?: MouseListener) {
   const currentStyle = window.getComputedStyle(element)
 
-  if (currentStyle.display !== 'block') {
+  if (currentStyle.display === 'none') {
     element.style.display = 'block'
   }
 

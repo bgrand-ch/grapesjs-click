@@ -24,17 +24,17 @@ function runExample () {
     ]
   })
 
-  const getGrabbedInfo = () => {
-    const divElement = document.getElementById('grabbed-info') as HTMLDivElement
-    divElement.textContent = 'Text block grabbed'
+  const getElement = (textContent: string) => {
+    const divElement = document.getElementById('element') as HTMLDivElement
+    divElement.textContent = textContent
 
     return divElement
   }
 
-  const grabBlock = () => {
+  const grabBlock = (id: string) => {
     const editorCommands = editor.Commands
     const commandOptions: CommandOptions = {
-      id: 'text', // block id from "grapesjs-blocks-basic" plugin
+      id, // block id from "grapesjs-blocks-basic" plugin
       isDebugging: true
     }
 
@@ -44,10 +44,10 @@ function runExample () {
   editor.on('load', () => {
     console.log('Editor loaded', editor)
 
-    const element = getGrabbedInfo()
+    const element = getElement('Text block grabbed')
     initGrabbedInfo(editor, element)
 
-    grabBlock()
+    grabBlock('text')
   })
 }
 
