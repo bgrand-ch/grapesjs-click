@@ -20,7 +20,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "prepare": "pnpm run build"
+    "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
     "grapesjs": "0.21.8",
