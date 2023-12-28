@@ -1,0 +1,38 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Install Pnpm
+        run: npm i -g pnpm@latest-8
+
+      - name: Config Pnpm
+        run: pnpm config set store-dir ~/.pnpm-store
+
+      - uses: actions/cache@v3
+        with:
+          path: '~/.pnpm-store'
+          key: ${{ hashFiles('./pnpm-lock.yaml') }}
+
+      - name: Install packages
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PPL_TOKEN }}
+
+      - name: Publish packages on GitHub registry
+        run: pnpm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PPL_TOKEN }}
