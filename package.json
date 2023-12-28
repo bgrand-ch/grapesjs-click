@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "grapesjs-click",
+  "name": "@propulse-lab/grapesjs-click",
   "version": "0.0.3",
   "description": "GrapesJS click plugin",
   "author": "Benjamin Grand",
