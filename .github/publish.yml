@@ -33,6 +33,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PPL_TOKEN }}
 
       - name: Publish packages on GitHub registry
-        run: pnpm publish
+        run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PPL_TOKEN }}
