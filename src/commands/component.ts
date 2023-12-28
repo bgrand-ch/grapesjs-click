@@ -1,4 +1,4 @@
-import { pluginName, logScope } from '../utils/constant'
+import { pluginName, logScope, grabComponentCommand, dropComponentCommand } from '../utils/constant'
 import { changeBodyCursor } from '../utils/cursor'
 import { getComponentById, selectComponent, getDroppableComponent } from '../utils/component'
 
@@ -20,7 +20,7 @@ export function resetGrabbedComponent (editor: Editor, component?: Component) {
 
 export function onGrabComponent (editor: Editor, sender: unknown, options: CommandOptions) {
   try {
-    const { isDebugging, id: componentId } = options
+    const { isDebugging, id } = options
 
     if (isDebugging) {
       console.log(`${logScope} onGrabComponent`, {
@@ -29,6 +29,9 @@ export function onGrabComponent (editor: Editor, sender: unknown, options: Comma
         options
       })
     }
+
+    const selectedComponent = editor.getSelected()
+    const componentId = id || selectedComponent?.getId()
 
     if (!componentId) {
       throw new Error('"componentId" is required')
@@ -48,7 +51,8 @@ export function onGrabComponent (editor: Editor, sender: unknown, options: Comma
     }
 
     window.sessionStorage.setItem(itemName, componentId)
-    editor.trigger('component:drag:start', component)
+
+    editor.trigger(grabComponentCommand, component)
 
     changeBodyCursor(editor, 'grabbing')
   } catch (err) {
@@ -114,6 +118,8 @@ export function onDropComponent (editor: Editor, sender: unknown, options: Comma
       component.remove()
       selectComponent(editor, appendedComponent)
     }
+
+    editor.trigger(dropComponentCommand, appendedComponent)
 
     resetGrabbedComponent(editor, component)
   } catch (err) {

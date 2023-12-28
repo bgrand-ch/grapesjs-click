@@ -1,4 +1,4 @@
-import { pluginName, logScope } from '../utils/constant'
+import { pluginName, logScope, grabBlockCommand, dropBlockCommand } from '../utils/constant'
 import { changeBodyCursor } from '../utils/cursor'
 import { selectComponent, getDroppableComponent } from '../utils/component'
 
@@ -48,9 +48,18 @@ export function onGrabBlock (editor: Editor, sender: unknown, options: CommandOp
     }
 
     window.sessionStorage.setItem(itemName, blockId)
-    editor.trigger('block:drag:start', block)
+
+    editor.trigger(grabBlockCommand, block)
 
     changeBodyCursor(editor, 'grabbing')
+
+    const selectedComponent = editor.getSelected()
+
+    if (!selectedComponent) {
+      return
+    }
+
+    editor.selectRemove(selectedComponent)
   } catch (err) {
     const { message } = err as Error
     console.warn(`${logScope} onGrabBlock - ${message}`)
@@ -108,6 +117,8 @@ export function onDropBlock (editor: Editor, sender: unknown, options: CommandOp
     if (appendedComponent) {
       selectComponent(editor, appendedComponent)
     }
+
+    editor.trigger(dropBlockCommand, block, appendedComponent)
 
     resetGrabbedBlock(editor, block)
   } catch (err) {
