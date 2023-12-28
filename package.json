@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "grapesjs-click",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "GrapesJS click plugin",
   "author": "Benjamin Grand",
   "license": "BSD-3-Clause",

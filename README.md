@@ -55,7 +55,7 @@ const editor = grapesjs.init({
 const commandOptions = {
   id: string // required, grapesjs block identifier
 }
-editor.run('click:grab-block', commandOptions)
+editor.runCommand('click:grab-block', commandOptions)
 ```
 
 ### Drop a block
@@ -64,7 +64,7 @@ editor.run('click:grab-block', commandOptions)
 const commandOptions = {
   id: string // optional, grabbed block id by default
 }
-editor.run('click:drop-block', commandOptions)
+editor.runCommand('click:drop-block', commandOptions)
 ```
 
 ### Grab a component
@@ -73,7 +73,7 @@ editor.run('click:drop-block', commandOptions)
 const commandOptions = {
   id: string // optional, selected component by default
 }
-editor.run('click:grab-component', commandOptions)
+editor.runCommand('click:grab-component', commandOptions)
 ```
 
 ### Drop a component
@@ -82,7 +82,7 @@ editor.run('click:grab-component', commandOptions)
 const commandOptions = {
   id: string // optional, grabbed component id by default
 }
-editor.run('click:drop-component', commandOptions)
+editor.runCommand('click:drop-component', commandOptions)
 ```
 
 ## Events
