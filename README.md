@@ -1,4 +1,4 @@
-# GrapesJS click plugin
+# GrapesJS click plugin (no more drag-and-drop)
 
 ## Installation
 
