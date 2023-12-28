@@ -31,13 +31,13 @@
   "peerDependencies": {
     "grapesjs": ">= 0.21.8"
   },
-  "homepage": "https://github.com/bgrand-ch/grapesjs-click",
+  "homepage": "https://github.com/propulse-lab/grapesjs-click",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bgrand-ch/grapesjs-click.git"
+    "url": "https://github.com/propulse-lab/grapesjs-click.git"
   },
   "bugs": {
-    "url": "https://github.com/bgrand-ch/grapesjs-click/issues"
+    "url": "https://github.com/propulse-lab/grapesjs-click/issues"
   },
   "keywords": [
     "gjs",
