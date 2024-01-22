@@ -2,7 +2,7 @@
   "type": "module",
   "name": "grapesjs-click",
   "version": "0.0.6",
-  "description": "GrapesJS click plugin",
+  "description": "GrapesJS click plugin (no more drag-and-drop)",
   "author": "Benjamin Grand",
   "license": "BSD-3-Clause",
   "main": "./dist/plugin.js",
