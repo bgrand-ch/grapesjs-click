@@ -36,7 +36,7 @@ import grapesjs, { usePlugin } from 'grapesjs'
 import grapesjsClick, { getMouseListener, showGrabbedInfo, hideGrabbedInfo } from 'grapesjs-click'
 
 const pluginOptions = {
-  hasAutoDropped: boolean // default to true
+  hasAutoDropped: boolean // optional, default to true
 }
 const editor = grapesjs.init({
   // ...

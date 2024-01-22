@@ -1,7 +1,7 @@
 <template>
   <main>
     <div id="editor">
-      <div data-gjs-type="text" style="max-width: 600px;">
+      <div data-gjs-type="text">
         Insert your text here
       </div>
     </div>
@@ -95,12 +95,20 @@ onMounted(() => {
     }
 
     showGrabbedInfoComponent.value = true
-
-    // const tenSeconds = 10000
-    // const timeoutId = window.setTimeout(() => {
-    //   showGrabbedInfoComponent.value = false
-    //   window.clearTimeout(timeoutId)
-    // }, tenSeconds)
   })
 })
 </script>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+body {
+  line-height: 1;
+}
+</style>
