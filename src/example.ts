@@ -1,5 +1,6 @@
 // This file is only used by Vite during development.
 // It is ignored when the files are built.
+// It is an example, a demonstration.
 
 import 'grapesjs/dist/css/grapes.min.css'
 
@@ -30,7 +31,7 @@ function updateBlocks (editor: Editor) {
   }
 }
 
-function resetElement (element: HTMLElement) {
+function resetGrabbedInfo (element: HTMLElement) {
   element.textContent = ''
   element.style.top = '0'
   element.style.left = '0'
@@ -41,7 +42,10 @@ function capitalizeValue (value?: string) {
     return ''
   }
 
-  return value.charAt(0).toUpperCase() + value.slice(1)
+  return (
+    value.charAt(0).toUpperCase() +
+    value.replace(/[_-]+/, ' ').slice(1)
+  )
 }
 
 function runExample () {
@@ -60,20 +64,22 @@ function runExample () {
   const grabbedInfoEl = document.getElementById('grabbed-info')!
   const mouseListener = getMouseListener(grabbedInfoEl)
 
-  editor.on('load', () => {
+  // For demonstration purposes, set the click event for all blocks.
+  editor.once('load', () => {
     console.log('Editor loaded', editor)
     updateBlocks(editor)
   })
 
+  // Update the toolbar of the selected component to add the grab action.
   editor.on('component:selected', (selectedComponent: Component) => {
-    const { type } = selectedComponent.props()
+    const { type: componentType } = selectedComponent.props()
     const toolbar = selectedComponent.toolbar
-    const hasGrabbedAction = toolbar.some(({ command }) => {
-      return command === grabComponentCommand
-    })
+
+    const isWrapperComponent = componentType === 'wrapper'
+    const hasGrabbedAction = toolbar.some(({ command }) => command === grabComponentCommand)
 
     if (
-      type === 'wrapper' ||
+      isWrapperComponent ||
       hasGrabbedAction
     ) {
       return
@@ -90,6 +96,7 @@ function runExample () {
     selectedComponent.set({ toolbar })
   })
 
+  // Show information on the currently grabbed block and follow the mouse cursor.
   editor.on(grabBlockCommand, (block: Block) => {
     const label = block.getLabel()
     const category = block.getCategoryLabel()
@@ -99,11 +106,13 @@ function runExample () {
     showGrabbedInfo(grabbedInfoEl, mouseListener)
   })
 
+  // Hide information on the currently grabbed block, because it has been dropped.
   editor.on(dropBlockCommand, () => {
-    resetElement(grabbedInfoEl)
+    resetGrabbedInfo(grabbedInfoEl)
     hideGrabbedInfo(grabbedInfoEl, mouseListener)
   })
 
+  // Show information on the currently grabbed component and follow the mouse cursor.
   editor.on(grabComponentCommand, (component: Component) => {
     const { name, type } = component.props()
     const label = name || capitalizeValue(type)
@@ -113,8 +122,9 @@ function runExample () {
     showGrabbedInfo(grabbedInfoEl, mouseListener)
   })
 
+  // Hide information on the currently grabbed component, because it has been dropped.
   editor.on(dropComponentCommand, () => {
-    resetElement(grabbedInfoEl)
+    resetGrabbedInfo(grabbedInfoEl)
     hideGrabbedInfo(grabbedInfoEl, mouseListener)
   })
 }

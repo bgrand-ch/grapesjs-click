@@ -1,75 +1,41 @@
 <template>
   <main>
     <div id="editor">
-      <div data-gjs-type="text" style="max-width: 600px;">
+      <div data-gjs-type="text">
         Insert your text here
       </div>
     </div>
 
-    <v-card
-      v-show="showGrabbedInfoComponent"
-      ref="grabbedInfoComponent"
-      class="mx-auto"
-      min-width="300"
+    <div
+      v-show="grabbedInfo"
+      ref="grabbedInfoEl"
+      class="grabbed-info"
     >
-      <v-card-item>
-        <v-card-title>
-          Grabbed element info
-        </v-card-title>
-        <v-card-subtitle>
-          Test text interpolation.
-        </v-card-subtitle>
-      </v-card-item>
-
-      <v-card-text>
-        {{ blockInfo }} block
-      </v-card-text>
-    </v-card>
+      {{ grabbedInfo }}
+    </div>
   </main>
 </template>
 
 <script setup lang="ts">
 import 'grapesjs/dist/css/grapes.min.css'
 
-import { ref, shallowRef, watch, onMounted } from 'vue'
+import { ref, shallowRef, onMounted } from 'vue'
 import grapesjs, { usePlugin } from 'grapesjs'
 import grapesjsBlocks from 'grapesjs-blocks-basic'
-import grapesjsClick, { initGrabbedInfo } from 'grapesjs-click'
+import grapesjsClick, { getMouseListener, hideGrabbedInfo, showGrabbedInfo } from 'grapesjs-click'
 
-import type { ComponentPublicInstance } from 'vue'
-import type { Editor } from 'grapesjs'
+import { updateBlocks, grabBlockCommand, dropBlockCommand } from './utils/block'
+import { grabComponentCommand, dropComponentCommand } from './utils/component'
+import { capitalizeValue } from './utils/string'
+import { grabIcon } from './utils/icon'
 
-const editor = ref<Editor|null>(null)
-const showGrabbedInfoComponent = ref(false)
-const grabbedInfoComponent = shallowRef<ComponentPublicInstance|null>(null)
-const blockInfo = ref('')
+import type { Editor, Block, Component } from 'grapesjs'
 
-watch(blockInfo, value => {
-  console.log('Block info updated', value)
-})
+const editor = shallowRef<Editor|null>(null)
+const grabbedInfoEl = shallowRef<HTMLElement|null>(null)
+const grabbedInfo = ref<string>('')
 
-watch(showGrabbedInfoComponent, value => {
-  if (!editor.value) {
-    return
-  }
-
-  const editorCommands = editor.value.Commands
-  const commandOptions = {
-    id: 'text', // block id from "grapesjs-blocks-basic" plugin
-    isDebugging: true
-  }
-
-  blockInfo.value = editor.value.Blocks.get('text').getLabel()
-
-  if (!value) {
-    editorCommands.run('click:drop-block', commandOptions)
-    return
-  }
-
-  editorCommands.run('click:grab-block', commandOptions)
-})
-
-onMounted(() => {
+onMounted(async () => {
   editor.value = grapesjs.init({
     container: '#editor',
     height: '100vh',
@@ -83,24 +49,98 @@ onMounted(() => {
     ]
   })
 
-  editor.value.on('load', () => {
+  if (!grabbedInfoEl.value) {
+    return
+  }
+
+  const mouseListener = getMouseListener(grabbedInfoEl.value)
+
+  // For demonstration purposes, set the click event for all blocks.
+  editor.value.once('load', () => {
     console.log('Editor loaded', editor.value)
+    updateBlocks(editor.value!)
+  })
+
+  // Update the toolbar of the selected component to add the grab action.
+  editor.value.on('component:selected', (selectedComponent: Component) => {
+    const { type: componentType } = selectedComponent.props()
+    const toolbar = selectedComponent.toolbar
+
+    const isWrapperComponent = componentType === 'wrapper'
+    const hasGrabbedAction = toolbar.some(({ command }) => command === grabComponentCommand)
 
     if (
-      editor.value &&
-      grabbedInfoComponent.value
+      isWrapperComponent ||
+      hasGrabbedAction
     ) {
-      const grabbedInfoElement = grabbedInfoComponent.value.$el
-      initGrabbedInfo(editor.value, grabbedInfoElement)
+      return
     }
 
-    showGrabbedInfoComponent.value = true
+    toolbar.unshift({
+      label: grabIcon,
+      command: grabComponentCommand,
+      attributes: {
+        title: 'Grab this component'
+      }
+    })
 
-    // const tenSeconds = 10000
-    // const timeoutId = window.setTimeout(() => {
-    //   showGrabbedInfoComponent.value = false
-    //   window.clearTimeout(timeoutId)
-    // }, tenSeconds)
+    selectedComponent.set({ toolbar })
+  })
+
+  // Show information on the currently grabbed block and follow the mouse cursor.
+  editor.value.on(grabBlockCommand, (block: Block) => {
+    const label = block.getLabel()
+    const category = block.getCategoryLabel()
+
+    grabbedInfo.value = `${label} (${category})`
+
+    showGrabbedInfo(grabbedInfoEl.value!, mouseListener)
+  })
+
+  // Hide information on the currently grabbed block, because it has been dropped.
+  editor.value.on(dropBlockCommand, () => {
+    grabbedInfo.value = ''
+    hideGrabbedInfo(grabbedInfoEl.value!, mouseListener)
+  })
+
+  // Show information on the currently grabbed component and follow the mouse cursor.
+  editor.value.on(grabComponentCommand, (component: Component) => {
+    const { name, type } = component.props()
+    const label = name || capitalizeValue(type)
+
+    grabbedInfo.value = label
+
+    showGrabbedInfo(grabbedInfoEl.value!, mouseListener)
+  })
+
+  // Hide information on the currently grabbed component, because it has been dropped.
+  editor.value.on(dropComponentCommand, () => {
+    grabbedInfo.value = ''
+    hideGrabbedInfo(grabbedInfoEl.value!, mouseListener)
   })
 })
 </script>
+
+<style scoped>
+.grabbed-info {
+  padding: 8px;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+</style>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+body {
+  line-height: 1;
+}
+</style>
