@@ -35,7 +35,9 @@ const editor = grapesjs.init({
 import grapesjs, { usePlugin } from 'grapesjs'
 import grapesjsClick, { getMouseListener, showGrabbedInfo, hideGrabbedInfo } from 'grapesjs-click'
 
-const pluginOptions = {
+import type { PluginOptions, CommandOptions } from 'grapesjs-click'
+
+const pluginOptions: PluginOptions = {
   hasAutoDropped: boolean // optional, default to true
 }
 const editor = grapesjs.init({
@@ -52,47 +54,53 @@ const editor = grapesjs.init({
 ### Grab a block
 
 ```ts
-const commandOptions = {
+const commandOptions: CommandOptions = {
   id: string // required, grapesjs block identifier
 }
+
 editor.runCommand('click:grab-block', commandOptions)
 ```
 
 ### Drop a block
 
 ```ts
-const commandOptions = {
+const commandOptions: CommandOptions = {
   id: string // optional, grabbed block id by default
 }
+
 editor.runCommand('click:drop-block', commandOptions)
 ```
 
 ### Grab a component
 
 ```ts
-const commandOptions = {
+const commandOptions: CommandOptions = {
   id: string // optional, selected component by default
 }
+
 editor.runCommand('click:grab-component', commandOptions)
 ```
 
 ### Drop a component
 
 ```ts
-const commandOptions = {
+const commandOptions: CommandOptions = {
   id: string // optional, grabbed component id by default
 }
+
 editor.runCommand('click:drop-component', commandOptions)
 ```
 
 ## Events
 
 ```ts
+import type { MouseListener } from 'grapesjs-click'
+
 // Your custom HTML element to display block or component info.
 const grabbedInfoEl = document.getElementById('grabbed-info')
 
 // An utility to make your custom HTML element follow the mouse cursor.
-const mouseListener = getMouseListener(grabbedInfoEl)
+const mouseListener: MouseListener = getMouseListener(grabbedInfoEl)
 ```
 
 > Full demonstration in the [`src/example.ts`](https://github.com/bgrand-ch/grapesjs-click/blob/main/src/example.ts) file.

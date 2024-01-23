@@ -39,6 +39,8 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
 
 export default plugin
 
+export * from './types'
+
 // Utilities
 export {
   getMouseListener,
