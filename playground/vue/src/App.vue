@@ -24,8 +24,8 @@ import grapesjs, { usePlugin } from 'grapesjs'
 import grapesjsBlocks from 'grapesjs-blocks-basic'
 import grapesjsClick, { getMouseListener, hideGrabbedInfo, showGrabbedInfo } from 'grapesjs-click'
 
-import { updateBlocks, grabBlockCommand, dropBlockCommand } from './utils/block'
-import { grabComponentCommand, dropComponentCommand } from './utils/component'
+import { grabBlockCommand, dropBlockCommand, grabComponentCommand, dropComponentCommand } from './utils/command'
+import { updateBlocks } from './utils/block'
 import { capitalizeValue } from './utils/string'
 import { grabIcon } from './utils/icon'
 

@@ -1,7 +1,6 @@
-import type { Editor } from 'grapesjs'
+import { grabBlockCommand } from './command'
 
-export const grabBlockCommand = 'click:grab-block'
-export const dropBlockCommand = 'click:drop-block'
+import type { Editor } from 'grapesjs'
 
 export function updateBlocks (editor: Editor) {
   const blockManager = editor.Blocks
