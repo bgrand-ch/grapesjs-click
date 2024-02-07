@@ -1,18 +1,18 @@
 import { logScope, grabBlockCommand, dropBlockCommand, grabComponentCommand, dropComponentCommand } from './constant'
+import { hasAvailableElement } from './element'
 
 import type { Editor } from 'grapesjs'
 import type { MouseListener } from '../types'
 
 const defaultDistance = 24
 
-function hasAvailableElement (element?: HTMLElement) {
-  return typeof element !== 'undefined' && element.isConnected
-}
-
 export function getMouseListener (element: HTMLElement, distance = defaultDistance) {
   return (event: MouseEvent) => {
     try {
-      if (!hasAvailableElement(element)) {
+      if (
+        !element ||
+        !hasAvailableElement(element)
+      ) {
         throw new Error('No element')
       }
 
@@ -35,7 +35,10 @@ export function getMouseListener (element: HTMLElement, distance = defaultDistan
 
 export function showGrabbedInfo (element: HTMLElement, mouseListener?: MouseListener) {
   try {
-    if (!hasAvailableElement(element)) {
+    if (
+      !element ||
+      !hasAvailableElement(element)
+    ) {
       throw new Error('No element')
     }
 
@@ -66,7 +69,10 @@ export function showGrabbedInfo (element: HTMLElement, mouseListener?: MouseList
 
 export function hideGrabbedInfo (element: HTMLElement, mouseListener?: MouseListener) {
   try {
-    if (!hasAvailableElement(element)) {
+    if (
+      !element ||
+      !hasAvailableElement(element)
+    ) {
       throw new Error('No element')
     }
 
