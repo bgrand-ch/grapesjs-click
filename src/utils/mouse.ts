@@ -4,11 +4,15 @@ import { hasAvailableElement } from './element'
 import type { Editor } from 'grapesjs'
 import type { MouseListener } from '../types'
 
-const defaultDistance = 24
+const defaultDistance: number = 24
 
-export function getMouseListener (element: HTMLElement, distance = defaultDistance) {
+export function getMouseListener (editor: Editor|null, element: HTMLElement, distance = defaultDistance) {
   return (event: MouseEvent) => {
     try {
+      if (!editor) {
+        throw new Error('No editor')
+      }
+
       if (
         !element ||
         !hasAvailableElement(element)
@@ -16,13 +20,14 @@ export function getMouseListener (element: HTMLElement, distance = defaultDistan
         throw new Error('No element')
       }
 
-      const { clientY, clientX } = event
-      const documentElement = document.documentElement
-      const documentOffset = documentElement.getBoundingClientRect()
+      const { offsetX, offsetY } = event
       const halfHeight = element.clientHeight / 1.3
 
-      const topPosition = (clientY - documentOffset.top) + halfHeight
-      const leftPosition = (clientX - documentOffset.left) + distance
+      const docElement = document.documentElement
+      const docOffset = docElement.getBoundingClientRect()
+
+      const leftPosition = (offsetX - docOffset.left) + distance
+      const topPosition = (offsetY - docOffset.top) + halfHeight
 
       element.style.top = `${topPosition}px`
       element.style.left = `${leftPosition}px`
@@ -63,7 +68,7 @@ export function showGrabbedInfo (element: HTMLElement, mouseListener?: MouseList
       return
     }
   
-    window.addEventListener('mousemove', mouseListener, false)
+    window.addEventListener('mousemove', mouseListener)
   }
 }
 
@@ -87,12 +92,12 @@ export function hideGrabbedInfo (element: HTMLElement, mouseListener?: MouseList
       return
     }
 
-    window.removeEventListener('mousemove', mouseListener, false)
+    window.removeEventListener('mousemove', mouseListener)
   }
 }
 
 export function initGrabbedInfo (editor: Editor, element: HTMLElement) {
-  const mouseListener = getMouseListener(element)
+  const mouseListener = getMouseListener(editor, element)
   const showHandler = () => showGrabbedInfo(element, mouseListener)
   const hideHandler = () => hideGrabbedInfo(element, mouseListener)
 

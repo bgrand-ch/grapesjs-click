@@ -36,10 +36,18 @@
 
       #grabbed-info {
         display: none;
+        float: left;
         padding: 8px;
+        white-space: nowrap;
         border-radius: 4px;
         background-color: white;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      }
+
+      /* Necessary when "infiniteCanvas: true" */
+      .gjs-frame {
+        min-width: 500px;
+        min-height: 500px;
       }
     </style>
   </body>

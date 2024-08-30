@@ -49,11 +49,26 @@ function capitalizeValue (value?: string) {
 }
 
 function runExample () {
+  const protectedCss: string = `
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body, [data-gjs-type="wrapper"] {
+      width: 100%;
+      height: 100%;
+    }
+  `
   const editor = grapesjs.init({
     container: '#editor', // same as id in the "index.html" file
     height: '100vh',
+    canvas: {
+      infiniteCanvas: true
+    },
     fromElement: true,
     storageManager: false,
+    protectedCss,
     plugins: [
       usePlugin(grapesjsBlocks, {
         flexGrid: true
@@ -62,7 +77,7 @@ function runExample () {
     ]
   })
   const grabbedInfoEl = document.getElementById('grabbed-info')!
-  const mouseListener = getMouseListener(grabbedInfoEl)
+  const mouseListener = getMouseListener(editor, grabbedInfoEl)
 
   // For demonstration purposes, set the click event for all blocks.
   editor.once('load', () => {
