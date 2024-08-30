@@ -6,6 +6,17 @@ import type { MouseListener } from '../types'
 
 const defaultDistance: number = 24
 
+export function getMousePosition (editor: Editor, event: MouseEvent) {
+  if (!event.isTrusted) {
+    return editor.Canvas.getMouseRelativeCanvas(event, {})
+  }
+
+  return {
+    x: event.clientX,
+    y: event.clientY
+  }
+}
+
 export function getMouseListener (editor: Editor|null, element: HTMLElement, distance = defaultDistance) {
   return (event: MouseEvent) => {
     try {
@@ -20,14 +31,11 @@ export function getMouseListener (editor: Editor|null, element: HTMLElement, dis
         throw new Error('No element')
       }
 
-      const { offsetX, offsetY } = event
+      const mousePos = getMousePosition(editor, event)
       const halfHeight = element.clientHeight / 1.3
 
-      const docElement = document.documentElement
-      const docOffset = docElement.getBoundingClientRect()
-
-      const leftPosition = (offsetX - docOffset.left) + distance
-      const topPosition = (offsetY - docOffset.top) + halfHeight
+      const leftPosition = mousePos.x + distance
+      const topPosition = mousePos.y + halfHeight
 
       element.style.top = `${topPosition}px`
       element.style.left = `${leftPosition}px`
@@ -67,7 +75,7 @@ export function showGrabbedInfo (element: HTMLElement, mouseListener?: MouseList
     if (!mouseListener) {
       return
     }
-  
+
     window.addEventListener('mousemove', mouseListener)
   }
 }

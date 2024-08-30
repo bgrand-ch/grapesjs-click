@@ -1,7 +1,7 @@
 import { grabBlockCommand, dropBlockCommand, grabComponentCommand, dropComponentCommand } from './utils/constant'
 import { onGrabBlock, onDropBlock, getGrabbedBlockId } from './commands/block'
 import { onGrabComponent, onDropComponent, getGrabbedComponentId } from './commands/component'
-import { getMouseListener, showGrabbedInfo, hideGrabbedInfo, initGrabbedInfo } from './utils/mouse'
+import { getMousePosition, getMouseListener, showGrabbedInfo, hideGrabbedInfo, initGrabbedInfo } from './utils/mouse'
 import { changeBodyCursor } from './utils/cursor'
 
 import type { Plugin } from 'grapesjs'
@@ -43,6 +43,7 @@ export * from './types'
 
 // Utilities
 export {
+  getMousePosition,
   getMouseListener,
   showGrabbedInfo,
   hideGrabbedInfo,
