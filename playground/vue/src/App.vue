@@ -53,7 +53,7 @@ onMounted(async () => {
     return
   }
 
-  const mouseListener = getMouseListener(grabbedInfoEl.value)
+  const mouseListener = getMouseListener(editor.value, grabbedInfoEl.value)
 
   // For demonstration purposes, set the click event for all blocks.
   editor.value.once('load', () => {

@@ -100,7 +100,7 @@ import type { MouseListener } from 'grapesjs-click'
 const grabbedInfoEl = document.getElementById('grabbed-info')
 
 // An utility to make your custom HTML element follow the mouse cursor.
-const mouseListener: MouseListener = getMouseListener(grabbedInfoEl)
+const mouseListener: MouseListener = getMouseListener(editor, grabbedInfoEl)
 ```
 
 > Full demonstration in the [`src/example.ts`](https://github.com/bgrand-ch/grapesjs-click/blob/main/src/example.ts) file.
