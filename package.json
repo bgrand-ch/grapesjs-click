@@ -23,7 +23,7 @@
     "prepare": "pnpm run build"
   },
   "devDependencies": {
-    "grapesjs": "0.21.12",
+    "grapesjs": "0.21.13",
     "grapesjs-blocks-basic": "1.0.2",
     "vite": "5.4.2",
     "vite-plugin-dts": "4.0.3"
